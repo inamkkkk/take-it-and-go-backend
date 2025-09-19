@@ -23,7 +23,17 @@ const getDisputeSchema = {
   }),
 };
 
+// TODO: Add a route to list all disputes, with optional filtering by userId and tripId.
+// This route should be protected by authenticate and authorize middleware to ensure only authenticated and authorized users can access it.
+const listDisputesSchema = {
+  query: Joi.object().keys({
+    userId: Joi.string().hex().length(24).optional(), // ObjectId
+    tripId: Joi.string().hex().length(24).optional(), // ObjectId
+  }),
+};
+
 router.post('/report', authenticate, validate(reportIssueSchema), disputeController.reportIssue);
 router.get('/:id', authenticate, validate(getDisputeSchema), disputeController.getDispute);
+router.get('/', authenticate, authorize(['admin', 'user']), validate(listDisputesSchema), disputeController.listDisputes);
 
 module.exports = router;
