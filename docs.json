@@ -255,6 +255,10 @@
           "Ensure the listing route is protected by `authenticate` and `authorize` middleware."
         ]
       }
+    },
+    {
+      "path": "/matchRoutes",
+      "docs": "Handles routes related to finding, viewing, and managing matches between shippers and drivers.\n\nResponsibilities:\n- Provide endpoints for finding potential matches based on trip details.\n- Allow authenticated and authorized users (shippers and drivers) to access match information.\n- Enable drivers to update the status of a match.\n\nKey Functions:\n- `POST /find`: Authenticates the user as a shipper, authorizes them, validates the request body using `findMatchesSchema`, and calls `matchController.findMatches` to find potential matches.\n- `GET /:id`: Authenticates and authorizes users as shipper or driver, retrieves a specific match by its ID using `matchController.getMatchById`.\n- `PUT /:id/status`: Authenticates and authorizes users as drivers, updates the status of a specific match by its ID using `matchController.updateMatchStatus`.\n- `GET /shipper`: Authenticates and authorizes users as shippers, retrieves a list of matches relevant to the shipper using `matchController.getShipperMatches`.\n- `GET /driver`: Authenticates and authorizes users as drivers, retrieves a list of matches relevant to the driver using `matchController.getDriverMatches`.\n\nTODOs:\n- Implement route for fetching a specific match by ID.\n- Implement route for accepting/rejecting a match (for drivers).\n- Implement route for getting a list of matches for a shipper.\n- Implement route for getting a list of matches for a driver."
     }
   ]
 }
