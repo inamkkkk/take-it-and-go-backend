@@ -40,11 +40,27 @@ const notificationSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    // TODO: Add a 'readAt' field of type Date, which will be set when the notification is marked as read.
+    // This field should be optional and nullable.
+    readAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,
   }
 );
+
+// TODO: Add a pre-save hook to automatically set 'readAt' to the current date and time
+// if 'read' is set to true and 'readAt' is not already set.
+notificationSchema.pre('save', function(next) {
+  if (this.isModified('read') && this.read && !this.readAt) {
+    this.readAt = new Date();
+  }
+  next();
+});
+
 
 /**
  * @typedef Notification
