@@ -336,6 +336,10 @@
           "Implement handling for disputes or chargebacks."
         ]
       }
+    },
+    {
+      "path": "src/services/trackingService.js",
+      "docs": "This service handles the tracking of delivery trips. It is responsible for initiating and stopping tracking, recording GPS updates, and retrieving historical tracking data. It interacts with the `GPSLog` and `Delivery` models and utilizes logging utilities. It also includes placeholders for Socket.IO integration to emit real-time updates.\n\n**Key Responsibilities:**\n- Manage the lifecycle of a delivery trip's tracking status (in-transit, delivered).\n- Record and store GPS coordinates for active trips.\n- Fetch historical GPS data for a given trip.\n- Emit real-time tracking events (e.g., trip start/stop, GPS updates) via Socket.IO.\n\n**Key Functions:**\n- `startTripTracking(tripId, userId)`: Sets delivery status to 'in-transit', validates user authorization, and prepares for tracking.\n- `stopTripTracking(tripId, userId)`: Sets delivery status to 'delivered' (or final status), validates user authorization.\n- `getTripTrackingLogs(tripId)`: Retrieves all historical GPS logs for a specific trip, sorted chronologically.\n- `recordGPSUpdate(tripId, userId, latitude, longitude)`: Saves a new GPS coordinate update, validates input, and prepares to broadcast the update.\n\n**TODOs:**\n- Implement robust status transition logic for `startTripTracking` and `stopTripTracking` to handle various scenarios (e.g., already in-transit, already delivered).\n- Integrate Socket.IO for real-time event broadcasting: emit 'trip_started', 'trip_stopped', and 'gps_update' events to relevant parties (e.g., shippers, admins).\n- Consider how to manage the Socket.IO `io` instance effectively (e.g., passing it as an argument, using a singleton).\n- Potentially create an initial GPS log upon starting tracking, or rely solely on actual updates.\n- Refine error handling and validation for GPS coordinates and delivery status updates."
     }
   ]
 }
