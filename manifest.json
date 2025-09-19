@@ -266,7 +266,7 @@
       "ok": true,
       "error": null,
       "attempts": 1,
-      "documented": false,
+      "documented": true,
       "lastRefinedAt": "2025-09-19T21:10:42.891Z",
       "modelUsed": "gemini-2.5-pro"
     },
