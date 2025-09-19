@@ -15,6 +15,34 @@
     {
       "path": "src/config/index.js",
       "docs": "This file handles application configuration by loading environment variables, validating them, and exporting a configuration object. It uses `dotenv` to load variables from a `.env` file and `Joi` for schema validation.\n\n**Purpose:**\n- To centralize and manage application configuration settings.\n- To ensure that required environment variables are present and have valid types.\n- To provide a structured way to access configuration values throughout the application.\n\n**Responsibilities:**\n- Loading environment variables from the `.env` file.\n- Defining a schema for expected environment variables using Joi.\n- Validating `process.env` against the defined schema.\n- Throwing an error if validation fails.\n- Exporting a well-structured configuration object with different sections (e.g., `env`, `port`, `mongoose`, `jwt`, `integrations`).\n\n**Key Functions/Features:**\n- `dotenv.config()`: Loads environment variables.\n- `Joi.object().keys({...})`: Defines the validation schema for environment variables, including types, required fields, defaults, and descriptions.\n- `envVarsSchema.prefs({ errors: { label: 'key' } }).validate(process.env)`: Validates the `process.env` object against the schema.\n- Error handling for validation failures.\n- Construction of the final configuration object, including logic for test environment specific MongoDB URL.\n\n**TODOs:**\n- Add validation for any new environment variables introduced in the future.\n- Add configuration for email integrations if they are implemented."
+    },
+    {
+      "path": "src/config/db.js",
+      "docs": {
+        "purpose": "Handles the MongoDB database connection and disconnection for the application.",
+        "responsibilities": [
+          "Establishes a connection to the MongoDB database using Mongoose.",
+          "Logs connection success or failure messages.",
+          "Listens for and logs MongoDB disconnection events.",
+          "Provides a function to gracefully disconnect from the MongoDB database."
+        ],
+        "key_functions": [
+          {
+            "name": "connectDB",
+            "description": "Asynchronously connects to MongoDB using connection URL and options from the configuration. Logs the connection status and sets up an event listener for disconnections."
+          },
+          {
+            "name": "disconnectDB",
+            "description": "Asynchronously disconnects from the MongoDB database. Logs the disconnection status."
+          }
+        ],
+        "todos": [
+          "Implement graceful shutdown for the MongoDB connection.",
+          "Consider using `mongoose.connection.on('disconnected', ...)` for logging.",
+          "Refine error handling for connection failures, potentially implementing retry logic before exiting.",
+          "Add a function to disconnect from MongoDB gracefully (this function already exists but might require further refinement or formalization)."
+        ]
+      }
     }
   ]
 }
