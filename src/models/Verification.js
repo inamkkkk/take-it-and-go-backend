@@ -48,6 +48,22 @@ const verificationSchema = new Schema(
   }
 );
 
+// TODO: Add a virtual field to get the User associated with this verification
+verificationSchema.virtual('user', {
+  ref: 'User',
+  localField: 'userId',
+  foreignField: '_id',
+  justOne: true,
+});
+
+// TODO: Add a pre-save hook to automatically set `reviewedAt` when status changes to 'verified' or 'rejected'
+verificationSchema.pre('save', function(next) {
+  if (this.isModified('status') && (this.status === 'verified' || this.status === 'rejected')) {
+    this.reviewedAt = new Date();
+  }
+  next();
+});
+
 /**
  * @typedef Verification
  */
