@@ -14,7 +14,16 @@ const adminLoginSchema = {
   }),
 };
 
+// TODO: Implement rate limiting for the login route to prevent brute-force attacks.
+// For now, we will add the login route.
 router.post('/login', validate(adminLoginSchema), adminController.login);
+
+// TODO: Add routes for managing users (view, create, update, delete).
+// TODO: Add routes for managing products (view, create, update, delete).
+// TODO: Add routes for managing orders (view, update status).
+// TODO: Add routes for viewing dashboards and analytics.
+// TODO: Implement routes for managing categories.
+
 router.get('/verifications', authenticate, authorize(['admin']), adminController.listVerifications);
 router.get('/disputes', authenticate, authorize(['admin']), adminController.listDisputes);
 router.get('/deliveries', authenticate, authorize(['admin']), adminController.listDeliveries);
