@@ -18,6 +18,7 @@ const gpsLogSchema = new Schema(
       type: {
         type: String,
         enum: ['Point'],
+        required: true, // Ensure the type is explicitly set
         default: 'Point',
       },
       coordinates: {
@@ -29,13 +30,27 @@ const gpsLogSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    // TODO: Add any additional fields that might be relevant for a GPS log, such as accuracy, speed, altitude, etc.
+    accuracy: {
+      type: Number,
+      required: false,
+    },
+    speed: {
+      type: Number,
+      required: false,
+    },
+    altitude: {
+      type: Number,
+      required: false,
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 
 // Create a 2dsphere index for geospatial queries (if needed for real-time tracking visualization)
+// This index should be on the 'location.coordinates' field.
 gpsLogSchema.index({ 'location.coordinates': '2dsphere' });
 
 /**
