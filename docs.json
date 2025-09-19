@@ -299,6 +299,43 @@
     {
       "path": "src/services/notificationService.js",
       "docs": "## Notification Service\n\nThis service is responsible for managing and sending notifications to users. It supports both in-app notifications stored in the database and push notifications via Firebase Cloud Messaging (FCM).\n\n### Purpose:\n\n- To abstract the logic for sending notifications to users.\n- To handle the creation of in-app notification records.\n- To integrate with Firebase Cloud Messaging for sending push notifications.\n\n### Responsibilities:\n\n- **Firebase Initialization:** Initializes the Firebase Admin SDK if FCM configuration is present.\n- **Notification Sending:** Manages the process of sending notifications to individual users.\n- **In-App Notification Creation:** Persists notification records in the database using the `Notification` model.\n- **FCM Integration:** Utilizes Firebase Cloud Messaging to deliver push notifications to user devices.\n- **Error Handling:** Logs and handles errors related to Firebase initialization and notification sending.\n\n### Key Functions:\n\n- **`sendNotificationToUser(userId, type, message, data)`:**\n  - Finds the target user by `userId`.\n  - Creates an in-app notification record in the `Notification` table.\n  - If FCM is configured and the user has registered FCM tokens, it sends a push notification via FCM.\n  - Includes notification type, message, and any additional `data` in the FCM payload.\n  - Logs the success or failure of FCM delivery.\n  - Handles potential FCM errors, such as invalid registration tokens, and logs warnings.\n  - Returns the created in-app notification record.\n\n### TODOs:\n\n- **FCM Token Management:** Implement logic to remove invalid FCM tokens from user profiles when FCM send operations fail with `registration-token-not-registered`.\n- **Notification Type Specific Logic:** Further refine how different `type` values are handled, potentially involving more dynamic data payloads or specific FCM notification settings.\n- **FCM Configuration Criticality:** Decide whether incomplete FCM configuration should be a critical error preventing application startup or if the app can gracefully degrade without push notifications."
+    },
+    {
+      "path": "src/services/paymentService.js",
+      "docs": {
+        "purpose": "Handles payment-related operations, including initiating escrow payments, releasing funds, and processing refunds. It integrates with third-party payment gateways like Razorpay and Stripe.",
+        "responsibilities": [
+          "Integrate with payment gateways (Razorpay, Stripe) for escrow payment flows.",
+          "Manage payment records in the database (creation, status updates).",
+          "Handle fund disbursement from escrow upon trip completion.",
+          "Process payment refunds.",
+          "Validate payment details and user authorization."
+        ],
+        "key_functions": [
+          {
+            "name": "initiateEscrowPayment",
+            "description": "Initiates an escrow payment process by creating a pending payment record and interacting with the configured payment gateway (Razorpay or Stripe) to create a payment intent or order. Returns necessary details for frontend payment completion."
+          },
+          {
+            "name": "releaseEscrowFunds",
+            "description": "Releases funds from escrow to the traveler after verifying trip completion and user authorization. It interacts with the payment gateway to capture/disburse funds and updates the payment status to 'completed'."
+          },
+          {
+            "name": "refundPayment",
+            "description": "Processes a refund for a given payment. It checks the payment status, interacts with the payment gateway to initiate the refund, and updates the payment status to 'refunded'."
+          }
+        ],
+        "TODOs": [
+          "Implement full payment gateway integration for Razorpay/Stripe in `initiateEscrowPayment`.",
+          "Implement actual fund disbursement logic for Razorpay payouts in `releaseEscrowFunds`.",
+          "Implement Stripe Connect setup and retrieval of traveler Stripe account IDs in `getTravelerStripeAccountId`.",
+          "Refine user authorization checks in `releaseEscrowFunds` based on roles and permissions.",
+          "Add more robust error handling and status updates for failed gateway operations.",
+          "Implement partial refund logic if required.",
+          "Consider adding support for different currencies based on configuration or trip details.",
+          "Implement handling for disputes or chargebacks."
+        ]
+      }
     }
   ]
 }
