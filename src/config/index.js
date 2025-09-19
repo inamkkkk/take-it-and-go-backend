@@ -2,8 +2,10 @@ const dotenv = require('dotenv');
 const path = require('path');
 const Joi = require('joi');
 
+// Load environment variables from .env file
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
+// Define validation schema for environment variables
 const envVarsSchema = Joi.object()
   .keys({
     NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
@@ -18,15 +20,24 @@ const envVarsSchema = Joi.object()
     GOOGLE_MAPS_API_KEY: Joi.string().description('Google Maps API Key'),
     FCM_SERVER_KEY: Joi.string().description('Firebase Cloud Messaging Server Key'),
     REDIS_URL: Joi.string().description('Redis URL for caching and sessions'),
+    // TODO: Add validation for any new environment variables here
+    // e.g., EMAIL_SERVICE: Joi.string().description('Email service provider'),
+    // e.g., EMAIL_HOST: Joi.string().description('Email host'),
+    // e.g., EMAIL_PORT: Joi.number().description('Email port'),
+    // e.g., EMAIL_USERNAME: Joi.string().description('Email username'),
+    // e.g., EMAIL_PASSWORD: Joi.string().description('Email password'),
+    // e.g., FROM_EMAIL: Joi.string().email().description('Sender email address'),
   })
   .unknown();
 
+// Validate environment variables
 const { value: envVars, error } = envVarsSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
 
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
+// Export configuration object
 module.exports = {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
@@ -59,6 +70,15 @@ module.exports = {
     redis: {
       url: envVars.REDIS_URL,
     },
+    // TODO: Add email integration configuration here
+    // email: {
+    //   service: envVars.EMAIL_SERVICE,
+    //   host: envVars.EMAIL_HOST,
+    //   port: envVars.EMAIL_PORT,
+    //   username: envVars.EMAIL_USERNAME,
+    //   password: envVars.EMAIL_PASSWORD,
+    //   from: envVars.FROM_EMAIL,
+    // },
   },
   apiVersion: '1.0.0',
 };
