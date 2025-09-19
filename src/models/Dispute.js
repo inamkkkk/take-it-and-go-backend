@@ -6,21 +6,21 @@ const disputeSchema = new Schema(
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
+      required: [true, 'User ID is required'],
     },
     tripId: {
       type: Schema.Types.ObjectId,
       ref: 'Delivery',
-      required: true,
+      required: [true, 'Trip ID is required'],
     },
     type: {
       type: String,
       enum: ['payment_issue', 'delivery_issue', 'item_damage', 'behavioral', 'other'],
-      required: true,
+      required: [true, 'Dispute type is required'],
     },
     description: {
       type: String,
-      required: true,
+      required: [true, 'Description is required'],
       trim: true,
     },
     evidence: {
@@ -35,24 +35,33 @@ const disputeSchema = new Schema(
     resolvedBy: {
       type: Schema.Types.ObjectId,
       ref: 'User', // Admin user who resolved the dispute
+      // required: [true, 'Resolver ID is required when dispute is resolved'] // Uncomment if needed when status is 'resolved'
     },
     resolutionDetails: {
       type: String,
       trim: true,
+      // required: [true, 'Resolution details are required when dispute is resolved'] // Uncomment if needed when status is 'resolved'
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
+    // createdAt and updatedAt are handled by { timestamps: true }
   },
   {
     timestamps: true,
   }
 );
+
+// TODO: Add a pre-save hook to validate resolvedBy and resolutionDetails when status is 'resolved'.
+disputeSchema.pre('save', function(next) {
+  if (this.status === 'resolved') {
+    if (!this.resolvedBy) {
+      return next(new Error('Resolver ID is required when dispute is resolved'));
+    }
+    if (!this.resolutionDetails) {
+      return next(new Error('Resolution details are required when dispute is resolved'));
+    }
+  }
+  next();
+});
+
 
 /**
  * @typedef Dispute
