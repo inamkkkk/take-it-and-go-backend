@@ -25,10 +25,27 @@ const sendNotificationSchema = {
   }),
 };
 
+// Schema for getting user notifications
+const getUserNotificationsSchema = {
+  params: Joi.object().keys({
+    userId: Joi.string().required().hex().length(24), // ObjectId of the user
+  }),
+};
+
+// Schema for marking a notification as read
+const markAsReadSchema = {
+  params: Joi.object().keys({
+    notificationId: Joi.string().required().hex().length(24), // ObjectId of the notification
+  }),
+};
+
 router.post('/send', authenticate, authorize(['admin', 'shipper', 'traveler']), validate(sendNotificationSchema), notificationController.sendNotification);
 
 // TODO: Add routes for getting user notifications, marking as read, etc.
-// router.get('/user/:userId', authenticate, authorize(['shipper', 'traveler', 'admin']), notificationController.getUserNotifications);
-// router.patch('/:notificationId/read', authenticate, authorize(['shipper', 'traveler']), notificationController.markAsRead);
+// Implement getUserNotifications route
+router.get('/user/:userId', authenticate, authorize(['shipper', 'traveler', 'admin']), validate(getUserNotificationsSchema), notificationController.getUserNotifications);
+
+// Implement markAsRead route
+router.patch('/:notificationId/read', authenticate, authorize(['shipper', 'traveler']), validate(markAsReadSchema), notificationController.markAsRead);
 
 module.exports = router;
