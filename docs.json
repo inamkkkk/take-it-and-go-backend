@@ -163,6 +163,55 @@
     {
       "path": "src/routes/adminRoutes.js",
       "docs": "Documentation generation failed"
+    },
+    {
+      "path": "/src/routes/authRoutes.js",
+      "docs": {
+        "purpose": "Handles all authentication-related API routes, including user signup, login, and password management. It leverages middleware for validation and controllers for business logic.",
+        "responsibilities": [
+          "Define API endpoints for authentication (signup, login, forgot password, reset password).",
+          "Integrate input validation using a Joi schema and a custom `validate` middleware.",
+          "Delegate actual authentication and authorization logic to the `authController`.",
+          "Export an Express router instance to be used in the main application."
+        ],
+        "keyFunctions": [
+          {
+            "name": "express.Router()",
+            "description": "Creates a new router object that acts as a modular, mountable route handler."
+          },
+          {
+            "name": "validate(schema)",
+            "description": "Middleware function that takes a Joi schema and validates the incoming request body against it. It throws an error if validation fails."
+          },
+          {
+            "name": "authController.signup",
+            "description": "Controller function responsible for handling user registration logic."
+          },
+          {
+            "name": "authController.login",
+            "description": "Controller function responsible for handling user login and token generation."
+          },
+          {
+            "name": "authController.forgotPassword",
+            "description": "Controller function for initiating the password reset process."
+          },
+          {
+            "name": "authController.resetPassword",
+            "description": "Controller function for completing the password reset process with a new password."
+          }
+        ],
+        "todos": [
+          "Implement logout functionality.",
+          "Implement functionality for refreshing access tokens.",
+          "Implement email verification flow for new user accounts."
+        ],
+        "validationSchemas": {
+          "signupSchema": "Validates user signup request, requiring email, phone (E.164 format), and password (min 8 chars, alphanumeric). Allows optional role ('shipper' or 'traveler').",
+          "loginSchema": "Validates user login request, requiring email and password.",
+          "forgotPasswordSchema": "Validates forgot password request, requiring email.",
+          "resetPasswordSchema": "Validates reset password request, requiring a token and a new password (min 8 chars, alphanumeric)."
+        }
+      }
     }
   ]
 }
