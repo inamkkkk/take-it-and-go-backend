@@ -22,15 +22,15 @@ const deliverySchema = new Schema(
       coords: { type: [Number], index: '2dsphere' }, // [longitude, latitude]
     },
     // TODO: Add package details (size, weight, description)
-    // package: {
-    //   description: { type: String, required: true },
-    //   weight: { type: Number, required: true }, // in kg
-    //   dimensions: { 
-    //     length: Number, 
-    //     width: Number, 
-    //     height: Number 
-    //   }, // in cm
-    // },
+    package: {
+      description: { type: String, required: true },
+      weight: { type: Number, required: true }, // in kg
+      dimensions: {
+        length: Number,
+        width: Number,
+        height: Number
+      }, // in cm
+    },
     status: {
       type: String,
       enum: ['pending', 'matched', 'in-transit', 'delivered', 'cancelled', 'disputed'],
@@ -46,6 +46,24 @@ const deliverySchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
+    },
+    // TODO: Add rating fields for both shipper and traveler after delivery
+    shipperRating: {
+      type: Number,
+      min: 1,
+      max: 5,
+      required: false,
+    },
+    travelerRating: {
+      type: Number,
+      min: 1,
+      max: 5,
+      required: false,
+    },
+    // TODO: Add fields for tracking the delivery in real-time (e.g., current location)
+    currentLocation: {
+      address: { type: String },
+      coords: { type: [Number], index: '2dsphere' }, // [longitude, latitude]
     },
   },
   {
