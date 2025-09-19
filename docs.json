@@ -212,6 +212,49 @@
           "resetPasswordSchema": "Validates reset password request, requiring a token and a new password (min 8 chars, alphanumeric)."
         }
       }
+    },
+    {
+      "path": "src/routes/disputeRoutes.js",
+      "docs": {
+        "purpose": "This file defines the API routes for managing dispute-related operations within the application. It handles reporting new disputes, retrieving specific dispute details, and listing disputes.",
+        "responsibilities": [
+          "Define API endpoints for dispute management.",
+          "Implement input validation for dispute-related requests.",
+          "Integrate authentication and authorization middleware.",
+          "Delegate core logic to the dispute controller."
+        ],
+        "keyFunctions": [
+          {
+            "name": "POST /report",
+            "description": "Reports a new issue or dispute. Requires user authentication and validates the request body against the `reportIssueSchema` before calling `disputeController.reportIssue`.",
+            "middleware": [
+              "authenticate",
+              "validate(reportIssueSchema)"
+            ]
+          },
+          {
+            "name": "GET /:id",
+            "description": "Retrieves the details of a specific dispute by its ID. Requires user authentication and validates the `id` parameter against the `getDisputeSchema` before calling `disputeController.getDispute`.",
+            "middleware": [
+              "authenticate",
+              "validate(getDisputeSchema)"
+            ]
+          },
+          {
+            "name": "GET /",
+            "description": "Lists disputes. Requires authentication and authorization for 'admin' or 'user' roles. Optionally filters disputes by `userId` and `tripId` via query parameters, validating against `listDisputesSchema` before calling `disputeController.listDisputes`.",
+            "middleware": [
+              "authenticate",
+              "authorize(['admin', 'user'])",
+              "validate(listDisputesSchema)"
+            ]
+          }
+        ],
+        "TODOs": [
+          "Add a route to list all disputes, with optional filtering by userId and tripId.",
+          "Ensure the listing route is protected by `authenticate` and `authorize` middleware."
+        ]
+      }
     }
   ]
 }
