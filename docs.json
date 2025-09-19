@@ -267,6 +267,10 @@
     {
       "path": "src/routes/paymentRoutes.js",
       "docs": "Documentation generation failed"
+    },
+    {
+      "path": "src/routes/trackingRoutes.js",
+      "docs": "This file defines the API routes for tracking functionalities. It handles starting, stopping, and retrieving tracking data for trips. It also includes a WebSocket endpoint for real-time location updates.\n\n**Responsibilities:**\n- Define API endpoints for tracking.\n- Implement request validation for tracking operations.\n- Integrate authentication and authorization middleware.\n- Handle WebSocket connections for real-time location broadcasting.\n\n**Key Functions:**\n- `POST /start`: Initiates tracking for a given trip. Requires `tripId` and `userId` in the body. Protected by `authenticate` and `authorize` (traveler role).\n- `POST /stop`: Stops tracking for a given trip. Requires `tripId` and `userId` in the body. Protected by `authenticate` and `authorize` (traveler role).\n- `GET /:tripId`: Retrieves tracking status or history for a specific trip. Requires `tripId` in params. Protected by `authenticate` and `authorize` (shipper, traveler, admin roles).\n- `WS /live/:tripId`: Establishes a WebSocket connection for real-time location updates. Requires `tripId` in params. Protected by `authenticate` and `authorize` (traveler role). Listens for location updates and broadcasts them.\n\n**TODOs:**\n- Initialize and configure WebSocket server if not done globally (currently assumes `io` is accessible).\n- Implement the actual logic for `trackingController.startTracking`, `trackingController.stopTracking`, and `trackingController.getTracking`.\n- Refine WebSocket integration: If `io` is not globally available, adjust how it's accessed or initialized.\n- Implement WebSocket message handling logic within the `/live/:tripId` route for processing location updates and broadcasting them to subscribed clients.\n- Implement WebSocket subscription/unsubscription logic for managing active connections to specific trips."
     }
   ]
 }
