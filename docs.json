@@ -55,6 +55,42 @@
     {
       "path": "src/controllers/chatController.js",
       "docs": "This file handles the real-time chat functionality using Socket.IO. It manages socket connections, authentication, message handling, user presence, and room management.\n\n**Purpose:** To provide a real-time chat experience between users.\n\n**Responsibilities:**\n- Establish and manage WebSocket connections.\n- Authenticate users connecting via Socket.IO.\n- Handle joining and leaving chat rooms.\n- Process and broadcast chat messages.\n- Implement typing indicators and read receipts.\n- Manage user presence (online/offline).\n- Log chat-related activities and errors.\n\n**Key Functions:**\n- `handleChat(socket, io)`: The main function that sets up event listeners for a new socket connection.\n  - **Authentication:** Verifies JWT token provided in the connection handshake query.\n  - **`joinRoom` event:** Allows users to join specific chat rooms (identified by `roomId`). It also fetches historical messages for that room.\n  - **`sendMessage` event:** Handles sending messages, saving them to the database via `chatService`, and broadcasting them to room participants.\n  - **`typing` / `stopTyping` events:** Broadcasts typing status to other users in the room.\n  - **`messageRead` event:** Handles marking messages as read (with a TODO for actual database update).\n  - **`disconnect` event:** Logs user disconnections.\n\n**TODOs:**\n- Initialize Notification service for offline messages.\n- Implement logic to verify if a user is allowed to join a specific room.\n- Implement sophisticated presence management (e.g., last seen).\n- Broadcast user offline status upon disconnection.\n- Update message status to 'read' in the database for `messageRead` event.\n- Refine the check for offline participants when sending notifications."
+    },
+    {
+      "path": "src/controllers/disputeController.js",
+      "docs": {
+        "purpose": "Handles incoming requests related to disputes, including reporting new issues and retrieving existing ones. It interacts with the dispute service for business logic and uses API response utilities for consistent output.",
+        "responsibilities": [
+          "Validating input data for dispute-related operations using express-validator.",
+          "Calling the appropriate dispute service methods to perform CRUD operations.",
+          "Formatting success and error responses.",
+          "Logging relevant information and errors."
+        ],
+        "key_functions": [
+          {
+            "name": "reportIssue",
+            "description": "Handles the creation of a new dispute. It validates input, creates a dispute record via the service, and logs the action. TODOs exist for implementing notification logic.",
+            "parameters": [
+              "req: Express request object, expected to contain userId, tripId, type, description, and optional evidence in the body.",
+              "res: Express response object."
+            ],
+            "returns": "A success response with the created dispute object or an error response."
+          },
+          {
+            "name": "getDispute",
+            "description": "Retrieves a specific dispute by its ID. It validates the ID, fetches the dispute from the service, and handles cases where the dispute is not found. TODOs exist for implementing authorization checks.",
+            "parameters": [
+              "req: Express request object, expected to contain the dispute ID in the URL parameters.",
+              "res: Express response object."
+            ],
+            "returns": "A success response with the dispute object or an error response."
+          }
+        ],
+        "todo_items": [
+          "Implement logic to notify relevant parties (e.g., admin, involved users) when a new dispute is reported.",
+          "Implement authorization logic to ensure only authorized users (e.g., involved user or admin) can view a specific dispute."
+        ]
+      }
     }
   ]
 }
