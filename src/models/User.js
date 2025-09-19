@@ -23,6 +23,8 @@ const userSchema = new Schema(
       unique: true,
       trim: true,
       validate(value) {
+        // TODO: Update validation to handle international phone numbers more robustly.
+        // Consider using a library like 'libphonenumber-js' if more complex internationalization is needed.
         if (!validator.isMobilePhone(value, 'any', { strictMode: false })) {
           throw new Error('Invalid phone number');
         }
@@ -34,6 +36,8 @@ const userSchema = new Schema(
       trim: true,
       minlength: 8,
       validate(value) {
+        // TODO: Enhance password complexity requirements if needed.
+        // For example, add checks for special characters, consecutive characters, etc.
         if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
           throw new Error('Password must contain at least one letter and one number');
         }
@@ -53,6 +57,9 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    // TODO: Consider adding a field to store the verification token for email and phone.
+    // e.g., `emailVerificationToken: String`, `phoneVerificationToken: String`
+    // Also, consider adding expiration for these tokens.
     isIdVerified: {
       type: String,
       enum: ['pending', 'verified', 'rejected', 'not_submitted'],
@@ -62,6 +69,10 @@ const userSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    // TODO: Add a field for last login timestamp.
+    // lastLoginAt: {
+    //   type: Date,
+    // },
   },
   {
     timestamps: true,
@@ -78,6 +89,7 @@ const userSchema = new Schema(
 // Hash password before saving
 userSchema.pre('save', async function (next) {
   const user = this;
+  // TODO: Ensure password hashing is robust. bcryptjs is generally good, but ensure salt rounds are sufficient.
   if (user.isModified('password')) {
     user.password = await bcrypt.hash(user.password, 8);
   }
