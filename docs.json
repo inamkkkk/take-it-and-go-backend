@@ -263,6 +263,10 @@
     {
       "path": "src/routes/notificationRoutes.js",
       "docs": "## Notification Routes\n\nThis module defines the API endpoints for managing user notifications.\n\n**Purpose:** To handle the creation, retrieval, and marking as read of notifications for users within the application.\n\n**Responsibilities:**\n- Define API endpoints for sending, retrieving, and updating notification statuses.\n- Integrate with authentication and authorization middleware to secure endpoints.\n- Utilize a validation middleware to ensure incoming request data conforms to predefined schemas.\n- Delegate core business logic to the `notificationController`.\n\n**Key Functions/Routes:**\n- `POST /send`: Allows authorized users (admin, shipper, traveler) to send notifications. Requires `userId`, `type`, `message`, and optional `data` in the request body.\n- `GET /user/:userId`: Retrieves all notifications for a specific user. Requires user authentication and authorization for shipper, traveler, or admin roles.\n- `PATCH /:notificationId/read`: Marks a specific notification as read. Requires user authentication and authorization for shipper or traveler roles.\n\n**Validation Schemas:**\n- `sendNotificationSchema`: Validates the payload for sending notifications, ensuring `userId`, `type`, and `message` are present and correctly formatted, and that `type` is one of the allowed values.\n- `getUserNotificationsSchema`: Validates the `userId` parameter for fetching user-specific notifications.\n- `markAsReadSchema`: Validates the `notificationId` parameter for marking a notification as read.\n\n**TODOs:**\n- Potentially add more granular notification types or data structures as needed.\n- Consider implementing routes for deleting notifications or clearing all notifications."
+    },
+    {
+      "path": "src/routes/paymentRoutes.js",
+      "docs": "Documentation generation failed"
     }
   ]
 }
